@@ -14,15 +14,15 @@ import java.util.ArrayList;
 public class employeeDAO {
     private static MongoClient client=null;
 
-    public static MongoClient Connect(){
-        if(client!=null)
-            return client;
-        try{
-            client = new MongoClient("localhost" , 27017);
-        }catch(UnknownHostException ex){
-            System.err.println(ex);
+    public static DBCollection Connect(){
+        if(client==null) {
+            try {
+                client = new MongoClient("localhost", 27017);
+            } catch (UnknownHostException ex) {
+                System.err.println(ex);
+            }
         }
-        return client;
+        return client.getDB("cmpe282XiaoWei742").getCollection("employee");
     }
 
     public static void DisConnect(){
@@ -31,9 +31,7 @@ public class employeeDAO {
     }
 
     public static boolean createEmployee(int id, String fname, String lname){
-        Connect();
-        DB db = client.getDB("test");
-        DBCollection clnt = db.getCollection("employee");
+        DBCollection clnt = Connect();
         BasicDBObject empdb = new BasicDBObject().append("id",id);
         DBCursor rst = clnt.find(empdb);
         boolean rtn;
@@ -49,9 +47,7 @@ public class employeeDAO {
     }
 
     public static boolean updateEmployee(int id, String fname, String lname){
-        Connect();
-        DB db = client.getDB("test");
-        DBCollection clnt = db.getCollection("employee");
+        DBCollection clnt = Connect();
         BasicDBObject empdb = new BasicDBObject().append("id",id);
         DBCursor rst = clnt.find(empdb);
         boolean rtn;
@@ -73,9 +69,7 @@ public class employeeDAO {
     }
 
     public static boolean deleteEmployee(int id){
-        Connect();
-        DB db = client.getDB("test");
-        DBCollection clnt = db.getCollection("employee");
+        DBCollection clnt = Connect();
         BasicDBObject empdb = new BasicDBObject().append("id",id);
         DBCursor rst = clnt.find(empdb);
         boolean rtn;
@@ -90,9 +84,7 @@ public class employeeDAO {
     }
 
     public static employee findEmployeeById(int id){
-        Connect();
-        DB db = client.getDB("test");
-        DBCollection clnt = db.getCollection("employee");
+        DBCollection clnt = Connect();
         BasicDBObject empdb = new BasicDBObject().append("id",id);
         DBCursor rst = clnt.find(empdb);
         employee rtn;
@@ -107,9 +99,7 @@ public class employeeDAO {
     }
 
     public static ArrayList<employee> findAllEmployees(){
-        Connect();
-        DB db = client.getDB("test");
-        DBCollection clnt = db.getCollection("employee");
+        DBCollection clnt = Connect();
         DBCursor rst = clnt.find();
         ArrayList<employee> rtn = new ArrayList<employee>();
         while(rst.hasNext()){

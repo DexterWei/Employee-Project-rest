@@ -16,15 +16,15 @@ import java.util.ArrayList;
 public class projectDAO {
     private static MongoClient client=null;
 
-    public static MongoClient Connect(){
-        if(client!=null)
-            return client;
-        try{
-            client = new MongoClient("localhost" , 27017);
-        }catch(UnknownHostException ex){
-            System.err.println(ex);
+    public static DBCollection Connect(){
+        if(client==null) {
+            try {
+                client = new MongoClient("localhost", 27017);
+            } catch (UnknownHostException ex) {
+                System.err.println(ex);
+            }
         }
-        return client;
+        return client.getDB("cmpe282XiaoWei742").getCollection("project");
     }
 
     public static void DisConnect(){
@@ -33,9 +33,7 @@ public class projectDAO {
     }
 
     public static boolean createProject(int id, String name, float budget){
-        Connect();
-        DB db = client.getDB("test");
-        DBCollection clnt = db.getCollection("project");
+        DBCollection clnt = Connect();
         BasicDBObject prjdb = new BasicDBObject().append("id",id);
         DBCursor rst = clnt.find(prjdb);
         boolean rtn;
@@ -51,9 +49,7 @@ public class projectDAO {
     }
 
     public static boolean updateProject(int id, String name, Float budget){
-        Connect();
-        DB db = client.getDB("test");
-        DBCollection clnt = db.getCollection("project");
+        DBCollection clnt = Connect();
         BasicDBObject prjdb = new BasicDBObject().append("id",id);
         DBCursor rst = clnt.find(prjdb);
         boolean rtn;
@@ -75,9 +71,7 @@ public class projectDAO {
     }
 
     public static boolean deleteProject(int id){
-        Connect();
-        DB db = client.getDB("test");
-        DBCollection clnt = db.getCollection("project");
+        DBCollection clnt = Connect();
         BasicDBObject prjdb = new BasicDBObject().append("id",id);
         DBCursor rst = clnt.find(prjdb);
         boolean rtn;
@@ -92,9 +86,7 @@ public class projectDAO {
     }
 
     public static project findProjectById(int id){
-        Connect();
-        DB db = client.getDB("test");
-        DBCollection clnt = db.getCollection("project");
+        DBCollection clnt = Connect();
         BasicDBObject prjdb = new BasicDBObject().append("id",id);
         DBCursor rst = clnt.find(prjdb);
         project rtn;
@@ -109,9 +101,7 @@ public class projectDAO {
     }
 
     public static ArrayList<project> findAllProjects(){
-        Connect();
-        DB db = client.getDB("test");
-        DBCollection clnt = db.getCollection("project");
+        DBCollection clnt = Connect();
         DBCursor rst = clnt.find();
         ArrayList<project> rtn = new ArrayList<project>();
         while(rst.hasNext()){
