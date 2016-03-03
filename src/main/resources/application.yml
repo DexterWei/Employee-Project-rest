@@ -1,0 +1,5 @@
+spring:
+ profiles: default
+uri: 'localhost'
+port: 27017
+name: 'cmpe282XiaoWei742'

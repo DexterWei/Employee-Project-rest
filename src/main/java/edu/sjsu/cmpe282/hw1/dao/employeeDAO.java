@@ -1,7 +1,12 @@
 package edu.sjsu.cmpe282.hw1.dao;
 
 import com.mongodb.*;
+import edu.sjsu.cmpe282.hw1.config.dbConfig;
 import edu.sjsu.cmpe282.hw1.model.employee;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.net.UnknownHostException;
@@ -10,19 +15,25 @@ import java.util.ArrayList;
 /**
  * Created by dexter on 2/28/16.
  */
+@EnableConfigurationProperties
+@Component
 @Repository("employeedao")
 public class employeeDAO {
     private static MongoClient client=null;
 
+    @Autowired
+    private dbConfig dbcfg;
+
     public static DBCollection Connect(){
+        System.out.println(dbConfig.getName());
         if(client==null) {
             try {
-                client = new MongoClient("localhost", 27017);
+                client = new MongoClient(dbConfig.getUri(), dbConfig.getPort());
             } catch (UnknownHostException ex) {
                 System.err.println(ex);
             }
         }
-        return client.getDB("cmpe282XiaoWei742").getCollection("employee");
+        return client.getDB(dbConfig.getName()).getCollection("employee");
     }
 
     public static void DisConnect(){

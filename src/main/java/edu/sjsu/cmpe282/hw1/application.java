@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"edu.sjsu.cmpe282.hw1.controller","edu.sjsu.cmpe282.hw1.model","edu.sjsu.cmpe282.hw1.dao"})
+@ComponentScan(basePackages = {"edu.sjsu.cmpe282.hw1.controller","edu.sjsu.cmpe282.hw1.model","edu.sjsu.cmpe282.hw1.dao","edu.sjsu.cmpe282.hw1.config"})
 public class application {
     public static void main(String[] args){
         SpringApplication.run(application.class, args);

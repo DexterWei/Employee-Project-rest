@@ -1,8 +1,12 @@
 package edu.sjsu.cmpe282.hw1.dao;
 
 import com.mongodb.*;
+import edu.sjsu.cmpe282.hw1.config.dbConfig;
 import edu.sjsu.cmpe282.hw1.model.employee;
 import edu.sjsu.cmpe282.hw1.model.project;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.Array;
@@ -12,19 +16,24 @@ import java.util.ArrayList;
 /**
  * Created by dexter on 2/29/16.
  */
+@EnableConfigurationProperties
+@Component
 @Repository("projectdao")
 public class projectDAO {
     private static MongoClient client=null;
 
+    @Autowired
+    private dbConfig dbcfg;
+
     public static DBCollection Connect(){
         if(client==null) {
             try {
-                client = new MongoClient("localhost", 27017);
+                client = new MongoClient(dbConfig.getUri(), dbConfig.getPort());
             } catch (UnknownHostException ex) {
                 System.err.println(ex);
             }
         }
-        return client.getDB("cmpe282XiaoWei742").getCollection("project");
+        return client.getDB(dbConfig.getName()).getCollection("project");
     }
 
     public static void DisConnect(){
